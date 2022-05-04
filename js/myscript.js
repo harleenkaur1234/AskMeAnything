@@ -1,6 +1,12 @@
 const form = document.querySelector('#myForm');
 const usernameInput = document.querySelector('#username');
+const emailInput = document.querySelector('#email');
 
+//Email validation function
+function isEmailValid(email) {
+    const reg = /^[a-zA-Z0-9._]{3,}@[a-zA-Z]{5,}[.]{1}[a-zA-Z.]{3,6}$/;
+    return reg.test(email);
+}
 
 //Form validation
 function validateForm() {
@@ -18,6 +24,16 @@ function validateForm() {
     } else {
         setSuccess(usernameInput);
     }
+
+    //Email validation
+    if (emailInput.value == '') {
+        setError(emailInput, 'Email address should not be blank');
+    } else if (isEmailValid(emailInput.value)) {
+        setSuccess(emailInput);
+    } else {
+        setError(emailInput, 'Provide valid email address');
+    }
+    
 }
 
 // Setting the error function
