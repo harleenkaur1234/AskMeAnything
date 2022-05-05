@@ -1,6 +1,7 @@
 const form = document.querySelector('#myForm');
 const usernameInput = document.querySelector('#username');
 const emailInput = document.querySelector('#email');
+const msgInput = document.getElementById('message');
 
 //Email validation function
 function isEmailValid(email) {
@@ -10,16 +11,16 @@ function isEmailValid(email) {
 
 //Form validation
 function validateForm() {
-    let correct_way = /^[A-Z a-z]+$/;
+    let correct_way = /^[A-Z .a-z]+$/;
 
     //Username validation
-    if (usernameInput.value == '') {
+    if (usernameInput.value.trim() == '') {
         setError(usernameInput, 'Name cannot be blank ');
     }
-    else if (usernameInput.value.length < 3) {
+    else if (usernameInput.value.trim().length < 3) {
         setError(usernameInput, 'Name must be of aleast 3 alphabets');
     }
-    else if (!usernameInput.value.match(correct_way)) {
+    else if (!correct_way.test(usernameInput.value.trim())) {
         setError(usernameInput, 'Name cannot contain special characters or numbers and should only be alphabets');
     } else {
         setSuccess(usernameInput);
@@ -28,12 +29,22 @@ function validateForm() {
     //Email validation
     if (emailInput.value == '') {
         setError(emailInput, 'Email address should not be blank');
-    } else if (isEmailValid(emailInput.value)) {
+    } else if (isEmailValid(emailInput.value.trim())) {
         setSuccess(emailInput);
     } else {
         setError(emailInput, 'Provide valid email address');
     }
-    
+
+    //Message validation
+    if (msgInput.value.trim() == '') {
+        setError(msgInput, "Message can't be blank");
+    }
+    else if (msgInput.value.trim().length < 40) {
+        setError(msgInput, "Message must be of minimum 40 characters long");
+    }
+    else {
+        setSuccess(msgInput);
+    }
 }
 
 // Setting the error function
@@ -55,3 +66,28 @@ function setSuccess(element) {
     }
     parent.classList.add('success');
 }
+
+//Function for Validating form on input before submitting
+isFormValid = () => {
+    const inputContainers = form.querySelectorAll('.form-group');
+    let result = true;
+    inputContainers.forEach((container) => {
+        if (container.classList.contains('error')) {
+            result = false;
+        }
+    });
+    return result;
+}
+
+//Adding eventListener to form for submitting
+form.addEventListener('submit', (event) => {
+    validateForm();
+    console.log(isFormValid());
+    if (isFormValid() == true) {
+        form.submit();
+        alert('You are being redirected');
+        window.open("https://lng-consultancy.com/", "_blank");
+    } else {
+        event.preventDefault();
+    }
+});
