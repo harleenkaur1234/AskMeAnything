@@ -5,7 +5,7 @@ const msgInput = document.getElementById('message');
 
 //Email validation function
 function isEmailValid(email) {
-    const reg = /^[a-zA-Z0-9._]{3,}@[a-zA-Z]{5,}[.]{1}[a-zA-Z.]{3,6}$/;
+    const reg = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
     return reg.test(email);
 }
 
